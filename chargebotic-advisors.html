@@ -390,9 +390,9 @@
 
         <div class="advisors-grid">
             <div class="advisor-card">
-                <div class="advisor-tag">Core Team &middot; Head of Software</div>
+                <div class="advisor-tag">Advisor &middot; Head of Software (joining post-raise)</div>
                 <div class="advisor-name">R. M.</div>
-                <div class="advisor-bio"><strong>Ex-Tesla.</strong> Worked on Optimus robot charger & Robotaxi energy systems. Ph.D. in CS, 6 years in AI & robotics.</div>
+                <div class="advisor-bio"><strong>Currently at Tesla.</strong> Working on Optimus robot charger & Robotaxi energy systems. Ph.D. in CS, 6 years in AI & robotics.</div>
             </div>
         </div>
 
@@ -521,12 +521,24 @@
                 email: document.getElementById('funnelEmail').value.trim(),
                 phone: document.getElementById('funnelPhone').value.trim(),
                 message: document.getElementById('funnelMessage').value.trim(),
-                timestamp: new Date().toISOString()
+                _subject: 'Chargebotic — New ' + selectedRole + ' interest',
+                _template: 'table'
             };
-            console.log('Chargebotic CTA submission:', JSON.stringify(data, null, 2));
-            // Hide funnel, show success
-            document.getElementById('funnel').classList.remove('active');
-            document.getElementById('successMsg').classList.add('active');
+
+            fetch('https://formsubmit.co/ajax/anis@chargebotic.com', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(function(res) { return res.json(); })
+            .then(function() {
+                document.getElementById('funnel').classList.remove('active');
+                document.getElementById('successMsg').classList.add('active');
+            })
+            .catch(function() {
+                document.getElementById('funnel').classList.remove('active');
+                document.getElementById('successMsg').classList.add('active');
+            });
         }
     </script>
 

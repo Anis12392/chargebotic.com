@@ -521,12 +521,24 @@
                 email: document.getElementById('funnelEmail').value.trim(),
                 phone: document.getElementById('funnelPhone').value.trim(),
                 message: document.getElementById('funnelMessage').value.trim(),
-                timestamp: new Date().toISOString()
+                _subject: 'Chargebotic — New ' + selectedRole + ' interest',
+                _template: 'table'
             };
-            console.log('Chargebotic CTA submission:', JSON.stringify(data, null, 2));
-            // Hide funnel, show success
-            document.getElementById('funnel').classList.remove('active');
-            document.getElementById('successMsg').classList.add('active');
+
+            fetch('https://formsubmit.co/ajax/anis@chargebotic.com', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(function(res) { return res.json(); })
+            .then(function() {
+                document.getElementById('funnel').classList.remove('active');
+                document.getElementById('successMsg').classList.add('active');
+            })
+            .catch(function() {
+                document.getElementById('funnel').classList.remove('active');
+                document.getElementById('successMsg').classList.add('active');
+            });
         }
     </script>
 
